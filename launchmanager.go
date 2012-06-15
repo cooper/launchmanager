@@ -4,10 +4,15 @@ import (
 	"net"
 	"os"
 	"os/exec"
+	"errors"
 )
 
 func Run() (err error) {
 	const path = "/system/socket/LaunchSocket"
+
+	if os.Getpid() != 1 {
+		return errors.New("invalid process ID")
+	}
 
 	// launch sysinit and wait for it to exit
 	launchFirst("/system/executable/sysinit")
@@ -33,7 +38,7 @@ func Run() (err error) {
 	createEventHandlers()
 
 	// run post-init programs
-	postInit()
+	launchFirst("/system/executable/postinit")
 
 	// loop for connections
 	for {
@@ -84,9 +89,4 @@ func launchProcess(conn *connection, id int, file string, argv []string) {
 func launchFirst(proc string) {
 	cmd := exec.Command(proc)
 	cmd.Run()
-}
-
-// run these after initialize
-func postInit() {
-	go launchFirst("/usr/bin/xinit")
 }
