@@ -10,7 +10,7 @@ func Run() (err error) {
 	const path = "/system/socket/LaunchSocket"
 
 	// launch sysinit and wait for it to exit
-	launchFirst("/system/executable/sysinit")	
+	launchFirst("/system/executable/sysinit")
 
 	// check if file exists. if so, delete it.
 	if _, err := os.Lstat(path); err == nil {
