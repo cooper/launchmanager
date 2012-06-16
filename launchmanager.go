@@ -1,10 +1,10 @@
 package LaunchManager
 
 import (
+	"errors"
 	"net"
 	"os"
 	"os/exec"
-	"errors"
 )
 
 func Run() (err error) {
