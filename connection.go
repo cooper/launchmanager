@@ -33,7 +33,7 @@ func newConnection(conn net.Conn) *connection {
 }
 
 // read data from a connection
-func readData(conn *connection) {
+func (conn *connection) readData() {
 	for {
 		line, _, err := conn.incoming.ReadLine()
 		if err != nil {

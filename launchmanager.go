@@ -48,7 +48,7 @@ func Run() (err error) {
 			return err
 		}
 
-		go readData(newConnection(conn))
+		go newConnection(conn).readData()
 
 	}
 	return
