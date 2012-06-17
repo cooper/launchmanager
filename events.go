@@ -13,7 +13,7 @@ func createEventHandlers() {
 // creates a process object for the connected process.
 func registerHandler(conn *connection, name string, params map[string]interface{}) {
 	pid := params["pid"].(float64)
-	conn.process = process.FromPID(int(pid))
+	conn.process = process.CFromPID(int(pid))
 }
 
 // runs an executable file
