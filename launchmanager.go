@@ -10,6 +10,12 @@ import (
 func Run() (err error) {
 	const path = "/system/socket/LaunchSocket"
 
+	// must run as root
+	if os.Getuid() != 0 {
+		return errors.New("must be run as root")
+	}
+
+	// must run as init
 	if os.Getpid() != 1 {
 		return errors.New("invalid process ID")
 	}
