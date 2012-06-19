@@ -77,6 +77,7 @@ func connectProcessManager() {
 			"name":    "LaunchManager",
 			"version": "1.0",
 		})
+		time.Sleep(5)
 	}
 }
 

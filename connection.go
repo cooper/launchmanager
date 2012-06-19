@@ -9,8 +9,6 @@ import (
 
 var currentId int = 0
 
-//var connections = make(map[*connection]string)
-
 type connection struct {
 	socket   *net.UnixConn
 	incoming *bufio.Reader
@@ -26,7 +24,6 @@ func newConnection(conn *net.UnixConn) *connection {
 		incoming: bufio.NewReader(conn),
 		id:       currentId,
 	}
-	//	connections[newconn] = "a"
 	return newconn
 }
 
