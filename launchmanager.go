@@ -6,6 +6,7 @@ import (
 	"net"
 	"os"
 	"os/exec"
+	"syscall"
 	"time"
 )
 
@@ -89,7 +90,9 @@ func launchProcess(conn *connection, id int, file string, argv []string) {
 	// run the command
 	cmd := exec.Command(file)
 	cmd.Args = argv
+	syscall.Setuid(1000)
 	err = cmd.Start()
+	syscall.Setuid(0)
 
 	// immediate error
 	if err != nil {
@@ -98,6 +101,7 @@ func launchProcess(conn *connection, id int, file string, argv []string) {
 			"pid":   cmd.Process.Pid,
 			"error": true,
 		})
+		fmt.Println(err.Error())
 		return
 	}
 
