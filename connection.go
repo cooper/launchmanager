@@ -12,20 +12,18 @@ var currentId int = 0
 //var connections = make(map[*connection]string)
 
 type connection struct {
-	conn     net.Conn
+	socket   *net.UnixConn
 	incoming *bufio.Reader
-	outgoing *bufio.Writer
 	id       int
 	process  *process.CProcess
 }
 
 // create a new connection
-func newConnection(conn net.Conn) *connection {
+func newConnection(conn *net.UnixConn) *connection {
 	currentId++
 	newconn := &connection{
-		conn:     conn,
+		socket:   conn,
 		incoming: bufio.NewReader(conn),
-		outgoing: bufio.NewWriter(conn),
 		id:       currentId,
 	}
 	//	connections[newconn] = "a"
@@ -71,7 +69,8 @@ func (conn *connection) send(command string, params map[string]interface{}) bool
 	if err != nil {
 		return false
 	}
-	_, err = conn.outgoing.Write(b)
+	b = append(b, '\n')
+	_, err = conn.socket.Write(b)
 	if err != nil {
 		return false
 	}
