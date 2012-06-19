@@ -101,7 +101,6 @@ func launchProcess(conn *connection, id int, file string, argv []string) {
 			"pid":   cmd.Process.Pid,
 			"error": true,
 		})
-		fmt.Println(err.Error())
 		return
 	}
 
