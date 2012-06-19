@@ -2,9 +2,11 @@ package LaunchManager
 
 import (
 	"errors"
+	"libclient"
 	"net"
 	"os"
 	"os/exec"
+	"time"
 )
 
 func Run() (err error) {
@@ -43,6 +45,9 @@ func Run() (err error) {
 	// create event handlers
 	createEventHandlers()
 
+	// start and connect to ProcessManager
+	go connectProcessManager()
+
 	// run post-init programs
 	launchFirst("/system/executable/postinit")
 
@@ -58,6 +63,18 @@ func Run() (err error) {
 
 	}
 	return
+}
+
+// start and connect process manager
+func connectProcessManager() {
+	for {
+		go launchFirst("/system/executable/ProcessManager")
+		time.Sleep(5)
+		libclient.RunProcess(map[string]string{
+			"name":    "LaunchManager",
+			"version": "1.0",
+		})
+	}
 }
 
 // launch a process and wait for it to exit, replying to the connection
