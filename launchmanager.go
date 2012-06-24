@@ -84,15 +84,19 @@ func connectProcessManager() {
 
 // launch a process and wait for it to exit, replying to the connection
 // with its status
-func launchProcess(conn *connection, id int, file string, argv []string) {
+func launchProcess(conn *connection, id int, file string, argv []string, asroot bool) {
 	var err error
 
 	// run the command
 	cmd := exec.Command(file)
 	cmd.Args = argv
-	syscall.Setuid(1000)
+	if asroot == false {
+		syscall.Setuid(1000)
+	}
 	err = cmd.Start()
-	syscall.Setuid(0)
+	if asroot == false {
+		syscall.Setuid(0)
+	}
 
 	// immediate error
 	if err != nil {

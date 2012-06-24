@@ -33,5 +33,5 @@ func runHandler(conn *connection, name string, params map[string]interface{}) {
 	}
 
 	// launch the process in a new goroutine
-	go launchProcess(conn, int(id), file, newargv)
+	go launchProcess(conn, int(id), file, newargv, false)
 }
