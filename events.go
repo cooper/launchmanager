@@ -1,6 +1,9 @@
 package LaunchManager
 
-import "process"
+import (
+	"fmt"
+	"process"
+)
 
 var eventHandlers = make(map[string]func(conn *connection, name string, params map[string]interface{}))
 
@@ -20,6 +23,18 @@ func registerHandler(conn *connection, name string, params map[string]interface{
 // ["run", {"id": 0, "file":"/bin/bash",argv:["some","arguments"]}]
 func runHandler(conn *connection, name string, params map[string]interface{}) {
 
+	// ensure that all values are present and of the right type.
+	var args = map[string]string{
+		"file": "string",
+		"id":   "float64",
+		"argv": "[]interface {}",
+	}
+	for arg, typ := range args {
+		if params[arg] == nil || fmt.Sprintf("%T", params[arg]) != typ {
+			return
+		}
+	}
+
 	// extract interface values
 	file := params["file"].(string)
 	argv := params["argv"].([]interface{})
@@ -27,7 +42,7 @@ func runHandler(conn *connection, name string, params map[string]interface{}) {
 
 	// run as root?
 	asroot := false
-	if params["asroot"] != nil && params["asroot"].(bool) == true {
+	if params["asroot"].(bool) == true {
 		asroot = true
 	}
 
