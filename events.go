@@ -39,12 +39,7 @@ func runHandler(conn *connection, name string, params map[string]interface{}) {
 	file := params["file"].(string)
 	argv := params["argv"].([]interface{})
 	id := params["id"].(float64)
-
-	// run as root?
-	asroot := false
-	if params["asroot"].(bool) == true {
-		asroot = true
-	}
+	asroot := params["asroot"].(bool)
 
 	// convert argv
 	newargv := make([]string, len(argv)+1)
