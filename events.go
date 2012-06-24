@@ -25,6 +25,12 @@ func runHandler(conn *connection, name string, params map[string]interface{}) {
 	argv := params["argv"].([]interface{})
 	id := params["id"].(float64)
 
+	// run as root?
+	asroot := false
+	if params["asroot"] != nil && params["asroot"].(bool) == true {
+		asroot = true
+	}
+
 	// convert argv
 	newargv := make([]string, len(argv)+1)
 	newargv[0] = file
@@ -33,5 +39,5 @@ func runHandler(conn *connection, name string, params map[string]interface{}) {
 	}
 
 	// launch the process in a new goroutine
-	go launchProcess(conn, int(id), file, newargv, false)
+	go launchProcess(conn, int(id), file, newargv, asroot)
 }
