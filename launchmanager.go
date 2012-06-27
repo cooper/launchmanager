@@ -2,7 +2,7 @@ package LaunchManager
 
 import (
 	"errors"
-	"libclient"
+	"libclient3"
 	"net"
 	"os"
 	"os/exec"
@@ -19,9 +19,9 @@ func Run() (err error) {
 	}
 
 	// must run as init
-	if os.Getpid() != 1 {
-		return errors.New("invalid process ID")
-	}
+	//if os.Getpid() != 1 {
+	//	return errors.New("invalid process ID")
+	//}
 
 	// launch sysinit and wait for it to exit
 	launchFirst("/system/executable/sysinit")
@@ -74,7 +74,7 @@ func connectProcessManager() {
 	for {
 		go launchFirst("/system/executable/ProcessManager")
 		time.Sleep(5)
-		libclient.RunProcess(map[string]string{
+		libclient3.RunPM(map[string]interface{}{
 			"name":    "LaunchManager",
 			"version": "1.0",
 		})
