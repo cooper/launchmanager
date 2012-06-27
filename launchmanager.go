@@ -19,9 +19,9 @@ func Run() (err error) {
 	}
 
 	// must run as init
-	//if os.Getpid() != 1 {
-	//	return errors.New("invalid process ID")
-	//}
+	if os.Getpid() != 1 {
+		return errors.New("invalid process ID")
+	}
 
 	// launch sysinit and wait for it to exit
 	launchFirst("/system/executable/sysinit")
