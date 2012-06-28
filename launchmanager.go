@@ -71,15 +71,15 @@ func Run() (err error) {
 
 // start and connect process manager
 func connectProcessManager() {
-	for {
-		go launchFirst("/system/executable/ProcessManager")
-		time.Sleep(5)
-		libclient3.RunPM(map[string]interface{}{
-			"name":    "LaunchManager",
-			"version": "1.0",
-		})
-		time.Sleep(5)
-	}
+	go launchFirst("/system/executable/ProcessManager")
+	time.Sleep(5 * time.Second)
+	libclient3.RunPM(map[string]interface{}{
+		"name":    "LaunchManager",
+		"version": "1.0",
+	})
+
+	// kernel panic!
+	panic("attempted to kill ProcessManager!")
 }
 
 // launch a process and wait for it to exit, replying to the connection
